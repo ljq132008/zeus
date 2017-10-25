@@ -6,7 +6,7 @@
 # @File    : agent_dao.py
 # @Software: PyCharm
 
-from .model import MYSQL_INSTANCES, MYSQL_MONITOR_CONF, MYSQL_SLOW_QUERY_FINGERPRINT, MYSQL_SLOW_LOG
+from .model import MYSQL_INSTANCES, MYSQL_MONITOR_CONF, MYSQL_SLOW_QUERY_FINGERPRINT, MYSQL_SLOW_LOG, MYSQL_PERFORMANCE_QUOTA
 from app import db
 from flask import current_app
 
@@ -77,4 +77,11 @@ class AgentDao:
         printfinger = MYSQL_SLOW_QUERY_FINGERPRINT.query.filter(MYSQL_SLOW_QUERY_FINGERPRINT.instance_id == instance_id and MYSQL_SLOW_QUERY_FINGERPRINT.md5code == md5str).first()
         printfinger.last_apper_time = event['time']
         printfinger.total_number = printfinger.total_number + 1
+        db.session.commit()
+
+    @staticmethod
+    def save_performance_quota(mysql_id,event):
+        a_performance_quota = MYSQL_PERFORMANCE_QUOTA(mysql_id, event['create_time'], event['Com_select'], event['Com_delete'], event['Questions'], event['Com_insert'], event['Com_commit'],
+                                                      event['Com_rollback'], event['Com_update'], event['Com_commit']+event['Com_rollback'])
+        db.session.add(a_performance_quota)
         db.session.commit()

@@ -10,7 +10,10 @@ from agent_dao import AgentDao
 from flask import current_app
 from utils import Utils
 from alarm_handler import Alarm
+import logging
 dao = AgentDao()
+
+logger = logging.getLogger('logger01')
 
 
 class AgentApiHandler:
@@ -70,3 +73,13 @@ class AgentApiHandler:
         result = cursor.findone()
         checkAlterDict['alter_slowlog'] = True #result[0][0]
         return checkAlterDict
+
+    @staticmethod
+    def push_performance_quota(parameters):
+        parameters_dict = eval(parameters)
+        current_app.logger.debug(parameters_dict)
+        instance_id = int(parameters_dict['mysql_id'])
+        logger.debug(type(parameters_dict['data']))
+        if parameters_dict['data']:
+            dao.save_performance_quota(instance_id, parameters_dict['data'])
+        return '处理成功'

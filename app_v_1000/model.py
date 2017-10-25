@@ -324,8 +324,3 @@ class INCEPTION_USER_REF_CLUSTER(db.Model):
         self.u_id = u_id
         self.c_id = c_id
 
-
-if __name__ == '__main__':
-    user = CRM_USER(user_name='admin_test', email='admin_test@we.com', password='admin', is_active=1,last_login='2017-09-21 00:00:00', is_staff=1,create_time='2017-09-21 00:00:00', group_id=1, inception_role=0)
-    db.session.add(user)
-    db.session.commit()

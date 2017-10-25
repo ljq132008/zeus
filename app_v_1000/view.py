@@ -84,6 +84,8 @@ def agent_controller():
     else:
         if fun_name == 'getMonitorConf':
             return jsonify(agentHandler.get_monitor_flag(parameters))
-        if fun_name == 'pushSlowLogs':
+        elif fun_name == 'pushSlowLogs':
             return jsonify(agentHandler.push_slow_logs(parameters))
+        elif fun_name == 'performanceQuota':
+            return jsonify(agentHandler.push_performance_quota(parameters))
 
