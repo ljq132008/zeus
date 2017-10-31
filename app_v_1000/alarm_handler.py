@@ -10,6 +10,10 @@ from utils import Utils
 from DBUtilsTools import DBSingle
 from app_v_1000.alarm_dao import AlarmDao
 from flask import current_app
+import MySQLdb
+import logging
+logger = logging.getLogger('logger01')
+
 
 class Alarm:
 
@@ -40,9 +44,13 @@ class Alarm:
         # 获取sql的explain
         cursor = conn.cursor()
         cursor.execute('use ' + str(schema) + ';')
-        cursor.execute('explain ' + str(found_sql))
-        result = cursor.fetchall()
-        print str(result)
+        result = None
+        try:
+            cursor.execute('explain ' + str(found_sql))
+            result = cursor.fetchall()
+        except MySQLdb.Error, e:
+            logger.error("MySQL Error:%s" % str(e))
+
         td_str = '<tr>'
         if result:
             for item in result:
@@ -61,5 +69,4 @@ class Alarm:
         html_string_tail = '</table></body></html>'
         full_info_str = "mysql实例：" + str(a_mysql.mysql_host) + ":" + str(a_mysql.mysql_port) + "<br/> schema:" + str(schema) + "<br/>发现新慢SQL:" + str(found_sql) + "<br/>执行计划:<br/>" \
                         + html_string_head + str(td_str) + html_string_tail
-        print full_info_str
         Utils.send_email(stmp_server='mail.we.com', from_addr='task_admin@we.com', password='M"Pp:0AeS05gK6ng', port=587, to_addr='liujiaqi@we.com', msgText=full_info_str)

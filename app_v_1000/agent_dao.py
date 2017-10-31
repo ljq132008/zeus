@@ -49,12 +49,12 @@ class AgentDao:
 
     @staticmethod
     def get_fingerprint(instance_id, md5str):
-        printfinger = MYSQL_SLOW_QUERY_FINGERPRINT.query.filter(MYSQL_SLOW_QUERY_FINGERPRINT.instance_id == instance_id and MYSQL_SLOW_QUERY_FINGERPRINT.md5code == md5str).all()
+        printfinger = MYSQL_SLOW_QUERY_FINGERPRINT.query.filter(MYSQL_SLOW_QUERY_FINGERPRINT.instance_id == instance_id, MYSQL_SLOW_QUERY_FINGERPRINT.md5code == md5str).first()
         db.session.commit()
         if printfinger:
-            return printfinger
+            return True
         else:
-            return None
+            return False
 
     @staticmethod
     def save_slow_log(mysql_id, md5str, event):

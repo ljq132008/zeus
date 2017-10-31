@@ -44,9 +44,9 @@ class AgentApiHandler:
                 dao.update_printfinger_last_time(instance_id, md5str, event)
                 dao.save_slow_log(instance_id, md5str, event)
             else:
-                # 不存在 写入printfinger 写入slow log
+                # 不存在 写入print finger 写入slow log
                 # 判断是否需要发送报警
-                if Alarm.check_alarm_status(instance_id, 'slow_log'):
+                if Alarm.check_alarm_status(instance_id, 'slow_log') and event['fingerprint'].lower().startswith('select'):
                     Alarm.alarm_slowlog_find_first(instance_id, event['sql'], event['schema'])
                     current_app.logger.info("mysql_id="+str(instance_id)+"实例发现新slow log并发送报警sql:"+str(event['sql'])+"schema:"+str(event['schema']))
                 dao.save_printfinger(instance_id, md5str, event)
@@ -66,13 +66,14 @@ class AgentApiHandler:
 
     @staticmethod
     def check_alarm_status(conn, instance_id):
-        checkAlterDict = {}
+        check_alarm_dict = {}
         check_sql = 'select alter_slowlog from mysql_instances where id=' + str(instance_id)
         cursor = conn.cursor()
         cursor.execute(check_sql)
         result = cursor.findone()
-        checkAlterDict['alter_slowlog'] = True #result[0][0]
-        return checkAlterDict
+        if result:
+            check_alarm_dict['alter_slowlog'] = result[0][0]
+        return check_alarm_dict
 
     @staticmethod
     def push_performance_quota(parameters):
