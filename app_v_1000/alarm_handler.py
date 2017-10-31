@@ -32,7 +32,7 @@ class Alarm:
                 return False
         else:
             current_app.logger.info("mysql_id:" + str(mysql_id) + "实例未发现告警项:" + str(alarm_type))
-            return True
+            return False
 
     @staticmethod
     def alarm_slowlog_find_first(instance_id, found_sql, schema):
