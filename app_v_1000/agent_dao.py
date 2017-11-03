@@ -82,6 +82,13 @@ class AgentDao:
     @staticmethod
     def save_performance_quota(mysql_id,event):
         a_performance_quota = MYSQL_PERFORMANCE_QUOTA(mysql_id, event['create_time'], event['Com_select'], event['Com_delete'], event['Questions'], event['Com_insert'], event['Com_commit'],
-                                                      event['Com_rollback'], event['Com_update'], event['Com_commit']+event['Com_rollback'])
+                                                      event['Com_rollback'], event['Com_update'], event['Com_commit']+event['Com_rollback'],
+                                                      event['Threads_running'],event['Threads_connected'],event['Threads_created'],event['Threads_cached'],
+                                                      event['Bytes_received'],event['Bytes_sent'],
+                                                      event['Innodb_buffer_pool_read_requests'],event['Innodb_buffer_pool_reads'],
+                                                      event['Innodb_buffer_pool_pages_flushed'],
+                                                      event['Innodb_data_reads'],event['Innodb_data_writes'],event['Innodb_data_read'],event['Innodb_data_written'],
+                                                      event['Innodb_os_log_fsyncs'],event['Innodb_os_log_written'],
+                                                      event['Innodb_buffer_pool_pages_data'],event['Innodb_buffer_pool_pages_free'],event['Innodb_buffer_pool_pages_dirty'])
         db.session.add(a_performance_quota)
         db.session.commit()

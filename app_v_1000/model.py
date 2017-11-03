@@ -230,8 +230,29 @@ class MYSQL_PERFORMANCE_QUOTA(db.Model):
     com_update = db.Column(db.Integer)
     qps = db.Column(db.Integer)
     tps = db.Column(db.Integer)
+    threads_running = db.Column(db.Integer)
+    threads_connected = db.Column(db.Integer)
+    threads_created = db.Column(db.Integer)
+    threads_cached = db.Column(db.Integer)
+    bytes_received = db.Column(db.Integer)
+    bytes_sent = db.Column(db.Integer)
+    innodb_buffer_pool_read_requests = db.Column(db.Integer)
+    innodb_buffer_pool_reads = db.Column(db.Integer)
+    innodb_buffer_pool_pages_flushed = db.Column(db.Integer)
+    innodb_data_reads = db.Column(db.Integer)
+    innodb_data_writes = db.Column(db.Integer)
+    innodb_data_read = db.Column(db.Integer)
+    innodb_data_written = db.Column(db.Integer)
+    innodb_os_log_fsyncs = db.Column(db.Integer)
+    innodb_os_log_written = db.Column(db.Integer)
+    innodb_buffer_pool_pages_data = db.Column(db.Integer)
+    innodb_buffer_pool_pages_free = db.Column(db.Integer)
+    innodb_buffer_pool_pages_dirty = db.Column(db.Integer)
 
-    def __init__(self, instance_id, create_time, com_select, com_delete, questions, com_insert, com_commit, com_rollback, com_update, tps):
+    def __init__(self, instance_id, create_time, com_select, com_delete, questions, com_insert, com_commit, com_rollback, com_update, tps,
+                 threads_running,threads_connected,threads_created,threads_cached,bytes_received,bytes_sent,innodb_buffer_pool_read_requests,
+                 innodb_buffer_pool_reads,innodb_buffer_pool_pages_flushed,innodb_data_reads,innodb_data_writes,innodb_data_read,innodb_data_written,
+                 innodb_os_log_fsyncs,innodb_os_log_written,innodb_buffer_pool_pages_data,innodb_buffer_pool_pages_free,innodb_buffer_pool_pages_dirty):
         self.instance_id = instance_id
         self.create_time = create_time
         self.com_select = com_select
@@ -243,6 +264,24 @@ class MYSQL_PERFORMANCE_QUOTA(db.Model):
         self.com_update = com_update
         self.qps = questions
         self.tps = tps
+        self.threads_running = threads_running
+        self.threads_connected =threads_connected
+        self.threads_created = threads_created
+        self.threads_cached = threads_cached
+        self.bytes_received = bytes_received
+        self.bytes_sent = bytes_sent
+        self.innodb_buffer_pool_read_requests = innodb_buffer_pool_read_requests
+        self.innodb_buffer_pool_reads = innodb_buffer_pool_reads
+        self.innodb_buffer_pool_pages_flushed = innodb_buffer_pool_pages_flushed
+        self.innodb_data_reads = innodb_data_reads
+        self.innodb_data_writes = innodb_data_writes
+        self.innodb_data_read = innodb_data_read
+        self.innodb_data_written = innodb_data_written
+        self.innodb_os_log_fsyncs = innodb_os_log_fsyncs
+        self.innodb_os_log_written = innodb_os_log_written
+        self.innodb_buffer_pool_pages_data = innodb_buffer_pool_pages_data
+        self.innodb_buffer_pool_pages_free = innodb_buffer_pool_pages_free
+        self.innodb_buffer_pool_pages_dirty = innodb_buffer_pool_pages_dirty
 
 class MYSQL_SLOW_LOG(db.Model):
     __tablename__ = 'mysql_slow_log'
